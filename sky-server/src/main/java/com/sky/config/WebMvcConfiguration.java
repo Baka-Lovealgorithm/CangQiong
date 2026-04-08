@@ -35,6 +35,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");
+        //只拦截非admin用户，会进行jwt密钥检测。
     }
 
     /**
@@ -59,10 +60,14 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     /**
      * 设置静态资源映射
-     * @param registry
+
+ * 该方法用于配置静态资源的访问路径，将特定的URL路径映射到对应的资源位置
+     * @param registry ResourceHandlerRegistry对象，用于注册资源处理器
      */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+    // 配置/doc.html路径的映射，指向类路径下的META-INF/resources目录
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
+    // 配置/webjars/**路径的映射，支持访问所有webjars资源，同样指向类路径下的META-INF/resources/webjars目录
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
