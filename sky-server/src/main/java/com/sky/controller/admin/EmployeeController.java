@@ -71,6 +71,7 @@ public class EmployeeController {
     public Result<String> logout() {
         return Result.success();
     }
+
 @PostMapping()
 @ApiOperation("新增员工")
     public Result save(@RequestBody EmployeeDTO employeeDTO)
@@ -96,6 +97,25 @@ public Result<PageResult>page(EmployeePageQueryDTO employeePageQueryDTO)
     {
 log.info("修改员工禁用与启用:status:{},id:{}",status,id);
 employeeService.startOrStop(status,id);
+return Result.success();
+    }
+
+    /**
+     * 根据id查询员工
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工")
+    public Result<Employee>getById(@PathVariable Long id)
+    {
+        return Result.success(employeeService.getById(id));
+    }
+    @PutMapping()
+    @ApiOperation("修改员工")
+    public Result update(@RequestBody EmployeeDTO employeeDTO)
+    {
+        employeeService.update(employeeDTO);
 return Result.success();
     }
 }

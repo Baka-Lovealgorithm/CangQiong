@@ -80,13 +80,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
 
         // 设置当前记录的创建时间和修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        // 设置当前记录创建人id和修改人id
-        // 通过线程将用户ID插入下边
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//
+//        // 设置当前记录创建人id和修改人id
+//        // 通过线程将用户ID插入下边
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         //插入用户
         employeeMapper.insert(employee);
     }
@@ -98,7 +98,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void startOrStop(Integer status, Long id) {
-employeeMapper.update(Employee.builder().id(id).status(status));
+       Employee  employee=new  Employee();
+       employee.setId(id);
+       employee.setStatus(status);
+employeeMapper.update(employee);
 
     }
 
@@ -114,4 +117,26 @@ employeeMapper.update(Employee.builder().id(id).status(status));
         return new PageResult(total, records);
     }
 
+/**
+ * 根据ID获取员工信息的方法
+ * 这是一个重写的方法，用于从数据库中查询指定ID的员工记录
+ *
+ * @param id 员工的唯一标识符，Long类型
+ * @return 返回对应的Employee对象，如果未找到则可能返回null
+ */
+    @Override
+    public Employee getById(Long id) {
+    // 调用employeeMapper的getById方法，传入id参数获取员工数据
+       return  employeeMapper.getById(id);
+
+    }
+
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee=new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.update(employee);
+    }
 }
