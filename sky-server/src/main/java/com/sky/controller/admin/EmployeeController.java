@@ -90,5 +90,12 @@ public Result<PageResult>page(EmployeePageQueryDTO employeePageQueryDTO)
     //通过出传递参数来实例化
     //因为需要将数据转换成T data，所以有数据的时候需要声明泛型。
 }
-
+    @PostMapping("/status/{status}")
+    @ApiOperation("修改员工禁用与启用")
+    public Result startOrStop(@PathVariable Integer status, Long id)
+    {
+log.info("修改员工禁用与启用:status:{},id:{}",status,id);
+employeeService.startOrStop(status,id);
+return Result.success();
+    }
 }

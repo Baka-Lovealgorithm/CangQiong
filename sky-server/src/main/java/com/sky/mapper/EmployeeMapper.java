@@ -25,4 +25,10 @@ public interface EmployeeMapper {
     void insert(Employee employee);
 
     Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * 动态的更新
+     * @param status
+     */
+    void update(Employee.EmployeeBuilder status);
 }

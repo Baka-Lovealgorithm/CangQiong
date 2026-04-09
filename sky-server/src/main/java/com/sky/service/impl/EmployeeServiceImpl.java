@@ -91,6 +91,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.insert(employee);
     }
 
+    /**
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void startOrStop(Integer status, Long id) {
+employeeMapper.update(Employee.builder().id(id).status(status));
+
+    }
+
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
         // select * from employee limit 0,10
@@ -102,4 +113,5 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return new PageResult(total, records);
     }
+
 }
