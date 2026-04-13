@@ -58,7 +58,7 @@ public class EmployeeController {
                 .name(employee.getName())
                 .token(token)
                 .build();
-
+log.info("登录成功");
         return Result.success(employeeLoginVO);
     }
 
