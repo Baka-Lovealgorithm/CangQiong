@@ -79,5 +79,11 @@ dishService.deleteBatch(ids);
 dishService.changeStatusById(id,status);
 return Result.success();
     }
+    @GetMapping("/list")
+    public Result selectByCategoryId(Long categoryId){
+    log.info("根据菜品分类查询菜品{}", categoryId);
+        List<DishVO> dishVOS = dishService.selectByCategoryId(categoryId);
+        return Result.success(dishVOS);
+    }
 }
 

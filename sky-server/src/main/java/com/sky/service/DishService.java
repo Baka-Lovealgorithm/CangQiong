@@ -35,4 +35,11 @@ public interface DishService {
  * @param status 新的状态值
  */
     void changeStatusById(Long id, Integer status);
+
+/**
+ * 根据分类ID查询菜品信息
+ * @param categoryId 分类ID，用于筛选特定分类下的菜品
+ * @return 返回该分类下的所有菜品列表，如果没有找到则返回空列表
+ */
+    List<DishVO> selectByCategoryId(Long categoryId);
 }

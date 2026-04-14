@@ -133,4 +133,10 @@ dishFlavors.forEach(dishFlavor -> {dishFlavor.setDishId(dishId);});
             }
         }
     }
+
+    @Override
+    public List<DishVO> selectByCategoryId(Long categoryId) {
+List<DishVO> dishVOS=dishMapper.SelectdishByCategoryId(categoryId);
+        return dishVOS;
+    }
 }

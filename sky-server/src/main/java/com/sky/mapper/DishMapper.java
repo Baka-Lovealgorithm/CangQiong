@@ -50,4 +50,6 @@ Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
  */
 @AutoFill(OperationType.UPDATE)
     void update(Dish dish);  // 接收一个Dish类型的参数，用于更新菜品信息
+
+    List<DishVO> SelectdishByCategoryId(Long categoryId);
 }
