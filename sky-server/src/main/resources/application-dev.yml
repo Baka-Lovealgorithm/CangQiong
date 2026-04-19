@@ -6,9 +6,18 @@ sky:
     database: sky_take_out
     username: root
     password: 123456
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+    database: 0
+  wechat:
+    app-id: wx07ec51de37263864
+    secret: 85a2429e055529f909ac435f1548df4b
 minio:
   access-key: minioadmin
   secret-key: minioadmin
   endpoint: http://localhost:9000
   bucket: test
+
 

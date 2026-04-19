@@ -10,9 +10,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/admin/dish")
@@ -21,6 +24,10 @@ import java.util.List;
 public class DishController {
     @Autowired
     private DishService dishService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
 
     /**
      * 添加菜品
@@ -33,6 +40,9 @@ public class DishController {
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);
+        //清理缓存
+        String key="dish_"+dishDTO.getCategoryId();
+        cleanCache(key);
         return Result.success();
     }
 
@@ -48,6 +58,8 @@ public class DishController {
     @ApiOperation(value = "批量删除菜品")
     public Result delete(@RequestParam List<Long>ids) {
         log.info("删除菜品{}", ids);
+        //暴力，将所有以“dish_”开头的删掉
+        cleanCache("dish_*");
 dishService.deleteBatch(ids);
         return Result.success();
     }
@@ -69,13 +81,19 @@ dishService.deleteBatch(ids);
 @ApiOperation(value = "修改菜品")
     public Result update(@RequestBody DishDTO dishDTO) {
     log.info("修改菜品{}", dishDTO);
+    //暴力清楚缓存
+    cleanCache("dish_*");
     // 调用服务层方法更新菜品信息，并返回操作结果
     dishService.updateWithFlavor(dishDTO);
     // 此处代码示例中直接返回成功结果，实际应用中应调用相应的服务方法
         return Result.success();
     }
 @PostMapping("/status/{status}")
+@ApiOperation("菜品起售以及停售")
     public Result updateStatus(@RequestParam Long id,@PathVariable Integer status){
+    //暴力清除缓存
+    //暴力清楚缓存
+  cleanCache("dish_*");
 dishService.changeStatusById(id,status);
 return Result.success();
     }
@@ -84,6 +102,14 @@ return Result.success();
     log.info("根据菜品分类查询菜品{}", categoryId);
         List<DishVO> dishVOS = dishService.selectByCategoryId(categoryId);
         return Result.success(dishVOS);
+    }
+
+    private void cleanCache(String pattern)
+    {
+        Set<String> keys = stringRedisTemplate.keys("dish_*");  // 注意加 *
+        if (keys != null && !keys.isEmpty()) {
+            stringRedisTemplate.delete(keys);
+        }
     }
 }
 

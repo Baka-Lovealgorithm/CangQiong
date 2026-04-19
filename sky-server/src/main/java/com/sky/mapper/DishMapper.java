@@ -52,4 +52,11 @@ Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
     void update(Dish dish);  // 接收一个Dish类型的参数，用于更新菜品信息
 
     List<DishVO> SelectdishByCategoryId(Long categoryId);
+
+    /**
+     * 动态条件查询菜品
+     * @param dish
+     * @return
+     */
+    List<Dish> list(Dish dish);
 }
